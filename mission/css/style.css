@@ -1,0 +1,39 @@
+/* 
+
+Project Name: Mission Memories - Assignment 1
+Client: OneMonth
+Author: Clark Shaeffer
+Developed @ One Month in NYC (actually, in UT)
+
+*/
+
+body {
+	background: url('../images/collage1.jpg'); 
+	background-repeat: repeat;
+	background-size: 925px;
+	background-attachment: fixed;
+}
+
+#container {
+	/* Colors found at colourlovers.com */
+	background: #282d30;
+	width: 424px;
+	color: #c5cdd1;
+	padding: 15px;
+}
+h1 {
+	font-size: 50px;
+}
+h2 {
+	background: #274b41;
+	color: white;
+	padding: 5px;
+	border-radius: 5px;
+}
+a {
+	color: #75c1f6;
+	text-decoration: none;
+}
+p {
+	font-size: 18px;
+}
