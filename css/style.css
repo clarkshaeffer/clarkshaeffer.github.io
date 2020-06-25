@@ -84,9 +84,15 @@ h2 {
 
 h3 {
  padding-left: 40px;
+ /* font-size: 40px; */
 }
 
 img {
     /* margin-bottom: 0px; */
     vertical-align: middle;
+}
+
+a {
+	color: #75c1f6;
+	text-decoration: none;
 }
