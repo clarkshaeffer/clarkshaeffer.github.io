@@ -65,6 +65,12 @@ body {
     color: #dadada;
 }
 
+#game {
+    position: fixed; /* or absolute */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
 
 h1 {
     /* font-size: 32px; */
@@ -83,12 +89,11 @@ h2 {
 }
 
 h3 {
- padding-left: 40px;
- /* font-size: 40px; */
+    padding-left: 40px;
+    /* font-size: 40px; */
 }
 
 img {
-    /* margin-bottom: 0px; */
     vertical-align: middle;
 }
 
