@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap" rel="stylesheet">
+
+        <title>Clark: To-Do</title>
+        <link rel="stylesheet" href="../css/style.css">
+
+    </head>
+    <body>
+        <!-- everything in a container div -->
+        <div id="container">
+            <!-- add image -->
+            <img src="../main_images/millcreek.jpg" alt="Millcreek Canyon" style="width: 100%;">
+            <!-- add 'back' header -->
+            <div id="back">
+                <h3><a href="../index.html">Back</a></h3>
+            </div> <!-- end 'back' header -->
+
+            <div id="list">
+                <h2 style="text-align: center;">To Do:</h2>
+                <input type="text" id="myInput" placeholder="Title...">
+                <button onclick="newElement()">Add</button>
+                <ul id="myUL">
+                    <li>List1</li>
+                    <li>List2</li>
+                    <li>List3</li>
+                </ul>
+            </div> <!-- end list tag -->
+            <div id="done">
+                <h2 style="text-align: center;">Done:</h2>
+                <ul id="doneUL">
+                    <li>Done1</li>
+
+                </ul>
+            </div> <!-- end done tag -->
+        </div> <!-- end container --> 
+        <script src="todo.js"></script>
+    </body>
+
+</html>

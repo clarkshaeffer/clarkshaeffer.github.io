@@ -42,6 +42,8 @@ body {
     color: white;
     /* padding: 20px; */
     /* line-height: 2em; */
+    /* position: absolute; */
+    /* padding-right: 30%; */
     
 }
 #projects {
@@ -72,6 +74,38 @@ body {
     transform: translate(-50%,-50%);
 }
 
+#back {
+    position: absolute;
+    background-color: #284346;
+    top: 0%;
+    left: 0%;
+    padding-right: 94%;
+}
+#list {
+    position: absolute;
+    background-color: #284346;
+    color: white;
+    border-radius: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
+    /* padding-top: 10px; */
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+#done {
+    position: absolute;
+    background-color: #1a2c2e;
+    color: white;
+    border-radius: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
+    /* padding-top: 10px; */
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    
+}
 h1 {
     /* font-size: 32px; */
     font-size: 45px;
@@ -84,8 +118,7 @@ h2 {
     font-size: 30px;
     /* text-align: right; */
     /* text-align: center; */
-    padding-top: 20px;
-    padding-left: 10px;
+    
 }
 
 h3 {
@@ -101,3 +134,24 @@ a {
 	color: #75c1f6;
 	text-decoration: none;
 }
+
+ul li {
+    margin: 0;
+    padding: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    /* No bullet-points */
+    list-style-type: none;
+}
+.checked {
+    opacity: 0.5;
+    background-color: gray;
+}
+
+/* Zebra odd-element background */
+/* ul li:nth-child(odd) {
+    background: #f9f9f9;
+  } */
