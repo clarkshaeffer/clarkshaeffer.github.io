@@ -1,3 +1,15 @@
+/*
+TODO:
+candy_get() is before villain movement, so it will spawn away but the villain will go through
+    the candy. Go around? Or candy after chase?
+new villains depending on score. Do they spawn after chase? On new candy? Each __ points?
+                                                                            red 2
+                                                                            blue 5
+                                                                            green 10
+game_over: wait a second before restarting.
+game_over: reset villains with random positions
+*/
+
 var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -42,6 +54,7 @@ var score = 0;
 var scoreText; 
 var gameOver = false;
 var turn = 0;
+//var pauseEvent;
 
 function create ()
 {
@@ -131,25 +144,40 @@ function create ()
     // begin receiving user keyboard input
     cursors = this.input.keyboard.createCursorKeys();
 
+    //pauseEvent = this.time.delayedCall(3000, wait, [], this);
+
     
     // scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
 
 
 }
 
+let player_x_prev;
+let player_y_prev;
+
 function update ()
 {
-    if (turn === 0)
-    {
 
-    }
-    if (turn >= 1)
-    {
-        chase();
-    }
+    /*
+        Update order:
+            0 - Player moves, previous location stored
+            Check for candy: candy_get() function after update()
+            1 - Villains move: chase() function after update()
+            New villains based on score
+
+            TURNS: (use % 6 or % 2 for player)
+            0 - player
+            1 - green
+            2 - player
+            3 - green, blue
+            4 - player
+            5 - green, blue, red
+
+    */
+    // if turns is 0, move. Is hard to make exterior function because of the 
+    // create function's keyboard initialization needed for movement.
     // console.log("turn: " + turn);
     //console.log(villains.getChildren()[0].texture.key);
-    {
 
         //console.log(player.x);
         //console.log(player.y);
@@ -160,8 +188,10 @@ function update ()
         //if (cursors.left.isDown)
 
         // if user presses left and player is not on left edge of screen
-        if (turn == 0)
+        if (turn % 2 == 0) // if turn is 0, 2, or 4, player moves.
         {
+            player_x_prev = player.x;
+            player_y_prev = player.y;
             if (this.input.keyboard.checkDown(cursors.left, duration) && player.x > 50)
             {
                 // player goes left 100 pixels
@@ -189,48 +219,25 @@ function update ()
                 player.y += 100;
                 turn++;
             }
-        }
+        } // end player's turn
 
-        for (i = 0; i < villains.getLength(); i++)
+        for (i = 0; i < villains.getLength(); i++) // for every number of villains in game
         {
-            if (player.x == candy.x && player.y == candy.y) 
+            if (player.x == candy.x && player.y == candy.y)  // if player is at candy position
             {
-                score++; // score goes up 1
-                console.log("score: " + score); // print score to console
-                //console.log("positions: " + villains[0].x); // print score to console
-                //console.log(villains);
-                random_x = (Phaser.Math.Between(0,7) * 100) + 50; // generate random number for candy's x position (in grid format)
-                random_y = (Phaser.Math.Between(0,5) * 100) + 50; // generate random number for candy's x position
-                // while the number generated is the candy's position - to prevent going to the same place
-                // OR while the number generated is the position of a villain
-                while ((random_x == candy.x && random_y == candy.y) || (random_x == villains.getChildren()[i].x && random_y == villains.getChildren()[i].y)) 
-                {
-                    // regenerate the random numbers
-                    random_x = (Phaser.Math.Between(0,7) * 100) + 50; 
-                    random_y = (Phaser.Math.Between(0,5) * 100) + 50;
-                }
-                //set candy's position to random number generates
-                candy.x = random_x;
-                candy.y = random_y;
+                candy_get();
             } // end if player is at candy's location
 
             if (player.x == villains.getChildren()[i].x && player.y == villains.getChildren()[i].y)
             {
-                // console.log("OH NOOOOOOOO");
-                // gameOver = true;
-                // this.scene.pause();
-                console.log("Game over");
-                score = 0;
-                player.x = start_x;
-                player.y = start_y;
-                // this.scene.resume();
-                
-                // Refreshes the page:
-                // location.reload();
+                game_over();
             }
             //console.log(villains.getChildren()[i].x + ", " + villains.getChildren()[i].y)
-        }
-    } // end while(!gameOver)
+        } // end for villain array
+    if (turn >= 1) // if turns is 1, chase.
+    {
+        chase();
+    }
 
     //this.pause();
 
@@ -238,79 +245,200 @@ function update ()
     // {
     //     console.log("x :  ", villains.get());
     // }
-    function chase()
+} // end update()
+
+
+function chase()
+{
+    for (i = 0; i < villains.getLength(); i++) // go through all villains
     {
-        //console.log("chase");
-        
-        if (turn == 1)
+        if (turn % 6 == 1) // green moves.
         {
-            for (i = 0; i < villains.getLength(); i++) // go through all villains
+
+        }
+        if (turn % 6 == 3) // green and blue move.
+        {
+
+        }
+        if (turn % 6 == 5) // green and blue and red move.
+        {
+            if (villains.getChildren()[i].texture.key == "villain1") // if the villain is red
             {
-                if (villains.getChildren()[i].texture.key == "villain1") // if the villain is red
+
+            }
+
+        }
+
+    } // end for through all villains
+    
+    if (turn == 1)
+    {
+        for (i = 0; i < villains.getLength(); i++) // go through all villains
+        {
+            if (villains.getChildren()[i].texture.key == "villain1") // if the villain is red
+            {
+                // if to the right or down of player, distance is positive. Else, is negative.
+
+                x_distance = villains.getChildren()[i].x - player_x_prev;
+                y_distance = villains.getChildren()[i].y - player_y_prev;
+
+                // x_distance = villains.getChildren()[i].x - player.x;
+                // y_distance = villains.getChildren()[i].y - player.y;
+                
+                if(Math.abs(x_distance) > Math.abs(y_distance)) // if farther away on the x axis
                 {
-                    // if to the right or down of player, distance is positive. Else, is negative.
-                    x_distance = villains.getChildren()[i].x - player.x;
-                    y_distance = villains.getChildren()[i].y - player.y;
-                    console.log("x_distance " + x_distance);
-                    console.log("y_distance " + y_distance);
-                    console.log("abs " + Math.abs(x_distance));
-                    
-                    if(Math.abs(x_distance) > Math.abs(y_distance)) // if farther away on the x axis
+                    if(x_distance < 0) // if to the left
+                    {
+                        villains.getChildren()[i].x +=100; // go right
+                    }
+                    else if(x_distance >= 0) // else if to the right
+                    {
+                        villains.getChildren()[i].x -=100; // go left
+                    }
+                }
+                else if (Math.abs(x_distance < Math.abs(y_distance))) // if farther away on the y axis
+                {
+                    if(y_distance < 0) // if up
+                    {
+                        villains.getChildren()[i].y +=100; // go down
+                    }
+                    else if(y_distance >= 0) // else if down
+                    {
+                        villains.getChildren()[i].y -=100; // go up
+                    }
+                }
+                else if (Math.abs(x_distance) == Math.abs(y_distance))
+                {
+                    console.log("Same distance");
+                    if(y_distance < 0) // if up
                     {
                         if(x_distance < 0) // if to the left
                         {
-                            villains.getChildren()[i].x +=100; // go right
-                        }
-                        else if(x_distance >= 0) // else if to the right
+                            // random, go down on 0 or right on 1.
+                            if(Math.Between(0,1) == 0)  // random: go down
+                            {
+                                villains.getChildren()[i].y +=100; // go down
+                            }
+                            else // else: random is 1: go right
+                            {
+                                villains.getChildren()[i].x +=100; // go right
+                            }
+                        } // end if up-left
+                        else // else, up-right.
                         {
-                            villains.getChildren()[i].x -=100; // go left
-                        }
-
-                    }
-                    else if (Math.abs(x_distance < Math.abs(y_distance)))
+                            // random, go down on 0 or left on 1.
+                            if(Math.Between(0,1) == 0)  // random is 0: go down
+                            {
+                                villains.getChildren()[i].y +=100; // go down
+                            }
+                            else // else: random is 1: go left
+                            {
+                                villains.getChildren()[i].x -=100; // go left
+                            }
+                        } // end else, up-right
+                    } // end if up
+                    else // if not up, then down
                     {
-                        if(y_distance < 0) // if up
+                        if(x_distance < 0) // if to the left
                         {
-                            villains.getChildren()[i].y +=100; // go down
-                        }
-                        else if(y_distance >= 0) // else if down
+                            // random, go up on 0 or right on 1.
+                            if(Math.Between(0,1) == 0)  // random is 0: go up
+                            {
+                                villains.getChildren()[i].y -=100; // go up
+                            }
+                            else // else: random is 1: go right
+                            {
+                                villains.getChildren()[i].x +=100; // go right
+                            }
+                        } // end if up-left
+                        else // else, up-right.
                         {
-                            villains.getChildren()[i].y -=100; // go up
-                        }
-                    }
-                    else if (Math.abs(x_distance) == Math.abs(y_distance))
-                    {
-                        //if ()
-                    }
-                }
-            }
-            turn ++;
-        }
-        else if (turn == 2)
+                            // random, go up on 0 or left on 1.
+                            if(Math.Between(0,1) == 0)  // random is 0: go up
+                            {
+                                villains.getChildren()[i].y -=100; // go up
+                            }
+                            else // else: random is 1: go left
+                            {
+                                villains.getChildren()[i].x -=100; // go left
+                            }
+                        } // end else, up-right
+                    } // end else, below
+                } // end else if x_distance == y_distance
+            } // end if villain1
+        } // end go through all villains
+        turn ++;
+    } // end if turn == 1
+    else if (turn == 2)
+    {
+        for (i = 0; i < villains.getLength(); i++)
         {
-            for (i = 0; i < villains.getLength(); i++)
+            if (villains.getChildren()[i].texture.key == "villain2")
             {
-                if (villains.getChildren()[i].texture.key == "villain2")
-                {
-                    villains.getChildren()[i].x += 100;
-                }
-            }
-            turn ++;
-        }
-        else if (turn == 3)
-        {
-            for (i = 0; i < villains.getLength(); i++)
-            {
-                if (villains.getChildren()[i].texture.key == "villain3")
-                {
-                    villains.getChildren()[i].x += 100;
-                }
+                villains.getChildren()[i].x += 100;
             }
         }
-        turn = 0;
-        //this.time.addEvent(500);
+        turn ++;
     }
-} // end update()
+    else if (turn == 3)
+    {
+        for (i = 0; i < villains.getLength(); i++)
+        {
+            if (villains.getChildren()[i].texture.key == "villain3")
+            {
+                villains.getChildren()[i].x += 100;
+            }
+        }
+    }
+    turn = 0;
+    //this.time.addEvent(500);
+} // end chase()
+
+// function villains()
+// {
+
+// }
+
+    
+function candy_get() 
+{
+    score++; // score goes up 1
+    console.log("score: " + score); // print score to console
+    //console.log("positions: " + villains[0].x); // print score to console
+    //console.log(villains);
+    random_x = (Phaser.Math.Between(0,7) * 100) + 50; // generate random number for candy's x position (in grid format)
+    random_y = (Phaser.Math.Between(0,5) * 100) + 50; // generate random number for candy's x position
+    // while the number generated is the candy's position - to prevent going to the same place
+    // OR while the number generated is the position of a villain
+    while ((random_x == candy.x && random_y == candy.y) || (random_x == villains.getChildren()[i].x && random_y == villains.getChildren()[i].y)) 
+    {
+        // regenerate the random numbers
+        random_x = (Phaser.Math.Between(0,7) * 100) + 50; 
+        random_y = (Phaser.Math.Between(0,5) * 100) + 50;
+    }
+    //set candy's position to random number generates
+    candy.x = random_x;
+    candy.y = random_y;
+} // end candy_get()
+
+function game_over()
+{
+    //this.scene.pause();
+    player.setTint(0xff0000);
+
+    console.log("Game over");
+    score = 0;
+    //await new Promise(r => setTimeout(r, 2000)); // wait 2 seconds
+    player.clearTint();
+    player.x = start_x;
+    player.y = start_y;
+
+    // gameOver = true;
+    // this.scene.resume();
+    
+    // Refreshes the page:
+    // location.reload();
+}
 
 
 // function hitBomb(player, bomb)
