@@ -1,0 +1,10 @@
+@font-face {
+	font-family: 'Qwerty';
+	src: local('Qwerty-Two'), url(./assets/Qwerty-Two.otf) format('opentype');
+      }
+.qwerty {
+font-family: "Qwerty";
+font-weight: black;
+/* fontSize: 1000px; */
+}
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css";
