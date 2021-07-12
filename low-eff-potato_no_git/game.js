@@ -14,6 +14,7 @@ let potato_frame_choice = [0,1,2];
 let box_top, box_left, box_right;
 let start = true;
 let killer;
+let song;
 
 class Game extends Phaser.Scene {
     constructor() {
@@ -37,8 +38,11 @@ class Game extends Phaser.Scene {
 		});
 		this.load.image('box_horiz', 'assets/box_horiz_80_48.png');
 		this.load.image('box_vert', 'assets/box_vert_48_80.png');
+		this.load.audio('rhino', 'assets/Rhino.wav');
 	}
     create() {
+		song = this.sound.add("rhino", { loop: true });
+		song.play();
 		points_text = this.add.text(0,0, 'punched: ' + points);
 		game_over_text = this.add.text(50, 100, '');
 		game_over_text.setVisible(false);
